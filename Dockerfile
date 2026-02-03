@@ -2,7 +2,7 @@
 FROM node:22-bookworm AS openclaw-build
 
 # Cache bust argument - change this value to force rebuild
-ARG CACHEBUST=20260203v2
+ARG CACHEBUST=20260203v3-pin-version
 
 # Dependencies needed for openclaw build
 RUN apt-get update \
@@ -24,9 +24,10 @@ RUN corepack enable
 WORKDIR /openclaw
 
 # Pin to a known ref (tag/branch). If it doesn't exist, fall back to main.
-ARG OPENCLAW_GIT_REF=main
+# Using v2026.1.29 - last known version before UI asset detection bug (#4855)
+ARG OPENCLAW_GIT_REF=v2026.1.29
 # Use CACHEBUST to force fresh clone and rebuild
-ARG CACHEBUST=20260203v2
+ARG CACHEBUST=20260203v3-pin-version
 RUN echo "Cache bust: ${CACHEBUST}" && git clone --depth 1 --branch "${OPENCLAW_GIT_REF}" https://github.com/openclaw/openclaw.git .
 
 # Patch: relax version requirements for packages that may reference unpublished versions.
