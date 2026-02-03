@@ -42,6 +42,10 @@ RUN pnpm build
 ENV OPENCLAW_PREFER_PNPM=1
 # Force UI rebuild - 2026-02-03
 RUN pnpm ui:install && pnpm ui:build
+# Verify UI assets were built
+RUN ls -la /openclaw/ui/ || echo "No ui directory" && \
+    ls -la /openclaw/ui/dist/ || echo "No ui/dist directory" && \
+    find /openclaw -name "index.html" -type f || echo "No index.html found"
 
 
 # Runtime image
