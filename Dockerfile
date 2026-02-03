@@ -40,8 +40,9 @@ RUN set -eux; \
 RUN pnpm install --no-frozen-lockfile
 RUN pnpm build
 ENV OPENCLAW_PREFER_PNPM=1
-# Force UI rebuild - 2026-02-03
-RUN pnpm ui:install && pnpm ui:build
+# Build UI assets - timestamp: 2026-02-03-17:30
+RUN echo "Building UI assets..." && pnpm ui:install
+RUN echo "Running UI build..." && pnpm ui:build
 # Verify UI assets were built
 RUN echo "=== Checking UI directories ===" && \
     ls -la /openclaw/ | grep -i ui || echo "No ui-related directories in /openclaw" && \
