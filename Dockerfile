@@ -1,4 +1,5 @@
 # Build openclaw from source to avoid npm packaging gaps (some dist files are not shipped).
+# Force rebuild: 2026-02-03
 FROM node:22-bookworm AS openclaw-build
 
 # Dependencies needed for openclaw build
