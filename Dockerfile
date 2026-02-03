@@ -1,6 +1,8 @@
 # Build openclaw from source to avoid npm packaging gaps (some dist files are not shipped).
-# Force rebuild: 2026-02-03
 FROM node:22-bookworm AS openclaw-build
+
+# Cache bust argument
+ARG CACHEBUST=1
 
 # Dependencies needed for openclaw build
 RUN apt-get update \
@@ -23,7 +25,9 @@ WORKDIR /openclaw
 
 # Pin to a known ref (tag/branch). If it doesn't exist, fall back to main.
 ARG OPENCLAW_GIT_REF=main
-RUN git clone --depth 1 --branch "${OPENCLAW_GIT_REF}" https://github.com/openclaw/openclaw.git .
+# Use CACHEBUST to force fresh clone and rebuild
+ARG CACHEBUST=1
+RUN echo "Cache bust: ${CACHEBUST}" && git clone --depth 1 --branch "${OPENCLAW_GIT_REF}" https://github.com/openclaw/openclaw.git .
 
 # Patch: relax version requirements for packages that may reference unpublished versions.
 # Apply to all extension package.json files to handle workspace protocol (workspace:*).
